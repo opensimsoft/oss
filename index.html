@@ -1,10 +1,294 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>My GitHub Website</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-    <p>Welcome to my new website hosted on GitHub Pages.</p>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Simple Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFAF7;
+    --ink:#1B1D1A;
+    --ink-soft:#5B5D53;
+    --line:#E7E5DC;
+    --accent:#3654E0;
+    --accent-soft:#EBEEFD;
+    --card:#FFFFFF;
+    --radius:14px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  h1,h2,h3,.disp{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.02em;
+  }
+  a{color:var(--accent); text-decoration:none;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+
+  /* Nav */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,250,247,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px; max-width:var(--max); margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px;
+  }
+  .logo-mark{
+    width:20px; height:20px; border-radius:5px;
+    background:var(--ink);
+    position:relative; flex-shrink:0;
+  }
+  .logo-mark::after{
+    content:'';
+    position:absolute; inset:6px;
+    background:var(--paper);
+    border-radius:2px;
+  }
+  .navlinks{display:flex; gap:32px; font-size:14px; color:var(--ink-soft);}
+  .navlinks a{color:var(--ink-soft);}
+  .navlinks a:hover{color:var(--ink);}
+
+  /* Hero */
+  .hero{padding:96px 32px 64px; max-width:var(--max); margin:0 auto;}
+  .eyebrow{
+    font-size:12px; color:var(--ink-soft); text-transform:uppercase;
+    margin-bottom:20px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{
+    content:''; width:6px; height:6px; border-radius:50%; background:var(--accent);
+  }
+  .hero h1{
+    font-size:clamp(36px,6vw,58px);
+    font-weight:600;
+    line-height:1.08;
+    max-width:14ch;
+  }
+  .hero p{
+    margin-top:24px;
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:52ch;
+  }
+  .hero-cta{
+    margin-top:36px; display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 22px; border-radius:999px;
+    font-size:14px; font-weight:500;
+    border:1px solid var(--ink);
+    transition:all .15s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--paper);}
+  .btn-primary:hover{background:#000;}
+  .btn-ghost{color:var(--ink); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  /* Signature animation: scattered cards resolving into a row */
+  .stage{
+    margin-top:72px;
+    height:140px;
+    position:relative;
+  }
+  .chip{
+    position:absolute;
+    width:96px; height:96px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    top:22px;
+    opacity:0;
+    animation:settle .9s cubic-bezier(.2,.8,.2,1) forwards;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .chip i{
+    width:20px; height:20px; border-radius:5px; background:var(--line);
+  }
+  .chip:nth-child(1){ --sx:-40px; --sy:-70px; --sr:-18deg; left:0px;   animation-delay:.05s;}
+  .chip:nth-child(2){ --sx:60px;  --sy:-40px; --sr:12deg;  left:130px; animation-delay:.15s;}
+  .chip:nth-child(3){ --sx:-70px; --sy:50px;  --sr:9deg;   left:260px; animation-delay:.25s;}
+  .chip:nth-child(4){ --sx:90px;  --sy:60px;  --sr:-14deg; left:390px; animation-delay:.35s;}
+  .chip:nth-child(5){ --sx:-30px; --sy:-60px; --sr:20deg;  left:520px; animation-delay:.45s;}
+  .chip:nth-child(5) i{background:var(--accent); opacity:.85;}
+  @keyframes settle{
+    0%{ transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.9); opacity:0; }
+    100%{ transform:translate(0,0) rotate(0deg) scale(1); opacity:1; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .chip{animation:none; opacity:1; transform:none;}
+  }
+  @media (max-width:760px){
+    .stage{display:none;}
+  }
+
+  section{padding:72px 32px; max-width:var(--max); margin:0 auto;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:40px; border-bottom:1px solid var(--line); padding-bottom:24px;
+  }
+  .section-head h2{font-size:28px; font-weight:600;}
+  .section-head p{color:var(--ink-soft); font-size:15px; margin-top:8px; max-width:44ch;}
+  .tag{
+    font-size:12px; color:var(--ink-soft); white-space:nowrap;
+  }
+
+  /* Team */
+  .team-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .member{
+    background:var(--card); padding:28px 24px;
+  }
+  .avatar{
+    width:44px; height:44px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px;
+    margin-bottom:18px;
+  }
+  .member h3{font-size:16px; font-weight:600;}
+  .member .role{font-size:13px; color:var(--ink-soft); margin-top:4px;}
+  .member p.bio{font-size:14px; color:var(--ink-soft); margin-top:14px;}
+
+  /* Products */
+  .product-list{
+  display:flex; flex-direction:column; gap:16px;
+}
+  .product{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px; display:flex; align-items:flex-start; gap:24px;
+}
+  .product:hover{border-color:#C9C7BB; transform:translateY(-2px);}
+  .product-body{flex:1; min-width:0;}
+.product-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+  .product-icon{
+    width:38px; height:38px; border-radius:10px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .product-icon span{width:14px; height:14px; border-radius:4px; background:var(--accent);}
+  .status{
+    font-size:11px; padding:4px 10px; border-radius:999px;
+    background:var(--paper); border:1px solid var(--line); color:var(--ink-soft);
+  }
+  .status.live{color:#2C7A4B; border-color:#CFE8DA; background:#EFF9F3;}
+  .product h3{font-size:17px; font-weight:600;}
+  .product p{font-size:14px; color:var(--ink-soft); margin:0;}
+  .product-foot{
+    margin-top:auto; font-size:13px; color:var(--ink-soft);
+    display:flex; align-items:center; gap:6px;
+  }
+
+  /* Footer */
+  footer{
+    border-top:1px solid var(--line); padding:56px 32px;
+  }
+  .foot-inner{
+    max-width:var(--max); margin:0 auto;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;
+  }
+  .foot-inner h2{font-size:24px; font-weight:600; max-width:20ch;}
+  .foot-links{display:flex; gap:24px; font-size:14px; color:var(--ink-soft);}
+  .foot-bottom{
+    max-width:var(--max); margin:32px auto 0; padding-top:24px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; font-size:13px; color:var(--ink-soft); flex-wrap:wrap; gap:12px;
+  }
+
+.product-list{
+  display:flex; flex-direction:column; gap:16px;
+}
+.product{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px; display:flex; align-items:flex-start; gap:24px;
+}
+.product-image{
+  width:140px; height:140px; border-radius:10px; background:var(--accent-soft);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.product-body{flex:1; min-width:0;}
+.product-top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px;}
+
+  ::selection{background:var(--accent-soft); color:var(--accent);}
+  a:focus-visible, .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-mark"></span>Open Simple Software</div>
+    <div class="navlinks">
+      <a href="#team">Team</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow mono">Open Simple Software Team</div>
+  <h1>Simple and useful.</h1>
+  <p>Building something useful and easy to use. Making sure it solve a tiny to big problem while keeping the scope small.</p>
+  <div class="hero-cta">
+  </div>
+</section>
+
+<section id="products">
+  <div class="section-head">
+    <div>
+      <h2>What we build</h2>
+      <p>Small, focused tools for everyday productivity — with more on the way.</p>
+    </div>
+  </div>
+  <div class="product">
+  <img src="images/rddricon.png" class="product-image"></img>
+  <div class="product-body">
+    <div class="product-top">
+      <h3>RDEY DIGITAL RECORDS</h3>
+      <div class="status live">Android</div>
+    </div>
+    <p>A tracking app to track your consistency in an activity that you usually do.</p>
+    <div class="product-foot"><a href="pages/rddrapp.html">Learn more →</a></div>
+  </div>
+</div>
+</div>
+</section>
+
+<footer id="contact">
+  <div class="foot-inner">
+    <h2>Contact Us</h2>
+    <div class="foot-links">
+      <a href="mailto:hello@opensimple.software">b4work@gmail.com</a>
+      <a href="#">GitHub</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Open Simple Software</span>
+    <span class="mono">Simple, Easy and Useful</span>
+  </div>
+</footer>
+
+</body>
 </html>
